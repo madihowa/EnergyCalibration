@@ -45,5 +45,6 @@
 
 ## To Do:
 
+-[] Add columns for Delta stuff in NetworkRPedict
 -[] Add all methods to generate all ROOT plots
 
