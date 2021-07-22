@@ -14,6 +14,7 @@ class DataHandler:
         self.path2test = path2test
         self.path2train = path2train
         self.list_inputs = self.getListInputs(path2list_inputs)
+
         self.train_all = self.getAllTrainDF()
         self.test_all = self.getAllTestDF()
         self.allColumns = self.train_all.columns

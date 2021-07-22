@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import math
 
-from keras.callbacks import ModelCheckpoint, TensorBoard
+from keras.callbacks import ModelCheckpoint 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten, LSTM, SimpleRNN, Embedding
 from sklearn.model_selection import train_test_split
@@ -76,9 +76,6 @@ def find_min_weights(directory):
 
 def FitRNetwork(df_train, df_train_all, target, emissions):
 
-    tensorboard_callbacks = TensorBoard(log_emissions=emissions + "/logs",
-                                        histogram_freq=1)
-
     NN_model = Make_RNN(df_train.shape[1])
 
     checkpoint_name = emissions + '/Weights-{epoch:03d}--{val_loss:.5f}.hdf5'
@@ -87,7 +84,7 @@ def FitRNetwork(df_train, df_train_all, target, emissions):
                                  verbose=1,
                                  save_best_only=True,
                                  mode='auto')
-    callbacks_list = [checkpoint, tensorboard_callbacks]
+    callbacks_list = [checkpoint]
 
     #Fit network
     history_callback = NN_model.fit(x=df_train,
@@ -95,30 +92,28 @@ def FitRNetwork(df_train, df_train_all, target, emissions):
                                     shuffle=True,
                                     epochs=5,
                                     batch_size=128,
+                                    workers=10,
                                     validation_split=0.1,
                                     callbacks=callbacks_list)
 
-    history_df = CSV_Callbacks(history_callback)
+    history_df = CSV_Callbacks(history_callback, emissions)
 
     # test the network
-    NetworkRPredict(NN_model, df_train, df_train_all, target, history_df, emissions):
+    NetworkRPredict(NN_model, df_train, df_train_all, target, history_df, emissions)
 
 
 def NetworkRPredict(NN_model, df_train, df_train_all, target, history_df, emissions):
-    file = find_min_weights(emissions)
-    min_loss = None
-    pwd = os.getcwd()
-
-    wights_file = file  # choose the best checkpoint
-    NN_model.load_weights(wights_file)  # load it
-    NN_model = compile_NN(NN_model)
 
     ##Make predictions
     predictions = (NN_model.predict(df_train))
     df_train_all['CalibratedE'] = predictions
 
+    """
+    add delta stuff
+    """
+
     #create all plots
-    MakeAllPlots(df_train, df_train_all, predictions, target, history):
+    MakeAllPlots(df_train, df_train_all, predictions, target, history)
 
     # write to disk
     write_csv_file(df_train_all, emissions)
