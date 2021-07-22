@@ -90,7 +90,7 @@ def FitRNetwork(df_train, df_train_all, target, emissions):
     history_callback = NN_model.fit(x=df_train,
                                     y=target,
                                     shuffle=True,
-                                    epochs=5,
+                                    epochs=100,
                                     batch_size=128,
                                     workers=10,
                                     validation_split=0.1,
@@ -113,14 +113,14 @@ def NetworkRPredict(NN_model, df_train, df_train_all, target, history_df, emissi
     """
 
     #create all plots
-    MakeAllPlots(df_train, df_train_all, predictions, target, history)
+    MakeAllPlots(df_train, df_train_all, predictions, target, history_df, emissions)
 
     # write to disk
     write_csv_file(df_train_all, emissions)
 
 
-def MakeAllPlots(df_train, df_train_all, predictions, target, history):
-    plt_result(df_train, predictions, target)
+def MakeAllPlots(df_train, df_train_all, predictions, target, history, emissions):
+    plt_result(df_train, predictions, target, emissions)
     loss_func_ana(history, emissions)
     createROOTPlots(df_train_all, emissions)
 

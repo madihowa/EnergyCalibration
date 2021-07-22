@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=$1
+#SBATCH --job-name=run4_two_inputs
 #SBATCH --output=quanah_outputs/%x.o%j
 #SBATCH --error=quanah_errors/%x.e%j
 #SBATCH --partition quanah

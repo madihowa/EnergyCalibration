@@ -22,7 +22,7 @@ if __name__ == "__main__":
     os.mkdir("{}".format(emissions))
 
     #copy the list inputs csv to the newly formed directory   
-    copyfile("./{}".format(inputs_dir), emissions+"/{}".format(inputs_dir))
+    copyfile("./{}".format(inputs_dir), emissions+"/{}".format(inputs_dir.split("/")[1]))
 
     #specifying the testing and training data files
     test_csv_dir, train_csv_dir = "./data/test.csv", "./data/train.csv"

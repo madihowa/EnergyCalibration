@@ -12,8 +12,6 @@ def plt_result(inputs, predictions, target, directory):
     ax = fig.add_axes([0, 0, 1, 1])
     ax.scatter(predictions, target, color='b')
     ax.plot(predictions, predictions, color='r')
-    ax.set_xlabel('Grades Range')
-    ax.set_ylabel('Grades Scored')
     ax.set_title('scatter plot')
     plt.xlabel('True Energy')
     plt.xlabel('Calibrated energy')
@@ -28,7 +26,7 @@ def loss_func_ana(history_df, emissions):
         history_df[column].plot(kind="line")
         plt.title("{}".format(column))
         plt.xlabel("Epochs")
-        plt.savefig("/{}/{}.png".format(emissions, column))
+        plt.savefig("{}/{}.png".format(emissions, column))
         plt.close()
 
 
@@ -58,7 +56,7 @@ def plothist2d(h, Ratio, title, emissions):
     plt.xlim([min(h.axes.edges[0]), max(h.axes.edges[0])])
     plt.ylim([0, 2])
     pname = title.replace(" ", "_") + "_plot_performance"
-    plt.savefig("/{}/{}.png".format(emissions, pname), dpi=400)
+    plt.savefig("{}/{}.png".format(emissions, pname), dpi=400)
     plt.close()
 
 
