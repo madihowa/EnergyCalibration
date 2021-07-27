@@ -108,9 +108,14 @@ def NetworkRPredict(NN_model, df_train, df_train_all, target, history_df, emissi
     predictions = (NN_model.predict(df_train))
     df_train_all['CalibratedE'] = predictions
 
-    """
-    add delta stuff
-    """
+    l_true = df_train_all["cluster_ENG_CALIB_TOT"].values
+    l_calib = df_train_all["CalibratedE"].values
+    l_cluster_calib = df_train_all["clusterECalib"]
+    Delta_E= l_true - l_calib
+    Delta_Calib_E = l_true - l_cluster_calib
+
+    df_train_all['Delta_Calib_E '] = Delta_Calib_E    
+    df_train_all['Delta_E'] = Delta_E    
 
     #create all plots
     MakeAllPlots(df_train, df_train_all, predictions, target, history_df, emissions)

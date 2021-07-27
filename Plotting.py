@@ -103,11 +103,6 @@ def createROOTPlots(df, emissions):
     og_df = df
     em_df = og_df[og_df["truthPDG"] == 111]
     had_df = og_df[og_df["truthPDG"] == 211]
-    l_true = df["cluster_ENG_CALIB_TOT"].values
-    l_calib = df["CalibratedE"].values
-    l_cluster_calib = df["clusterECalib"]
-    Delta_E= l_true - l_calib
-    Delta_Calib_E = l_true - l_cluster_calib
     Plot_performance(og_df, "All Data", emissions)
     Plot_performance(em_df, "EM Tree", emissions)
     Plot_performance(had_df, "Had Tree", emissions)
