@@ -2,6 +2,14 @@
 
 **Madison Howard**
 
+### USAGE ON QUANAH:
+
+To know all the input parameters
+```
+python qjob.py --help
+```
+
+
 ## Highlevel Algorithm:
 
 0. Take in `2` arguments that specify `emission_folder` name and `inputs_list.csv` csv file that specifies the columns needed for training.
