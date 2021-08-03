@@ -22,31 +22,31 @@ class DataHandler:
         self.test_df = self.getTestingData()
         self.target_df = self.train_all["cluster_ENG_CALIB_TOT"]
 
-    def getListInputs(self, path2inputs):
+    def getListInputs(self, path2inputs): #gets list inputs data
         with open(path2inputs, newline='') as f:
             reader = csv.reader(f)
             data = list(reader)
         data = list(np.array(data).flatten())
         return data
 
-    def getAllTestDF(self):
+    def getAllTestDF(self): #gets testing data frame
         test_all = pd.read_csv(self.path2test)
         return test_all
 
-    def getAllTrainDF(self):
+    def getAllTrainDF(self):#gets training data frame
         train_all = pd.read_csv(self.path2train)
         return train_all
 
-    def getAllDataColumns(self):
+    def getAllDataColumns(self): #gets the names of the data columns in the data frame
         columns = pd.read_csv(self.path2test, nrows=1)
         return columns
 
-    def getTestingData(self):
+    def getTestingData(self):#gets list inputs testing data from normalized data frame
         test_df = self.test_all[self.list_inputs]
         normed_df = normalizeDF(test_df)
         return normed_df
 
-    def getTrainingData(self):
+    def getTrainingData(self):#gets list inputs training data from normalized data frame
         train_df = self.train_all[self.list_inputs]
         normed_df = normalizeDF(train_df)
         return normed_df

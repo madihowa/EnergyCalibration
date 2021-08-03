@@ -41,7 +41,11 @@ except ImportError:
 
 
 def CSV_Callbacks(callbacks, emissions):
-
+"""
+inputs: callback history, emissions folder
+outputs: callback history data frame
+process: takes callback_history.csv and adds it to emissions folder
+"""
     f = open("callback_history.csv", "w")
     print(type(callbacks.history))
     for title in callbacks.history:
@@ -59,6 +63,11 @@ def write_csv_file(df, dir, file_name='results.csv'):
 
 
 def find_min_weights(directory):
+"""
+inputs: directory with hdf5 files (weights)
+outputs: one weights file
+process: filters through hdf5 (weights) files to find the one with the minimum amount of loss
+"""
     pwd = os.getcwd()
     min_loss = None
     for root, dirs, files in os.walk(directory):
@@ -75,6 +84,11 @@ def find_min_weights(directory):
 
 
 def FitRNetwork(df_train, df_train_all, target, emissions):
+"""
+inputs:df_train, df_train_all, target for network, emissions folder
+outputs:callback history data frame, weights checkpoints
+process: trains the NN based on Make_RNN(), makes checkpoints (.hdf5), uses CSV_Callbacks() to add to the callback_history file
+"""
 
     NN_model = Make_RNN(df_train.shape[1])
 
@@ -103,9 +117,12 @@ def FitRNetwork(df_train, df_train_all, target, emissions):
 
 
 def NetworkRPredict(NN_model, df_train, df_train_all, target, history_df, emissions):
-
+"""
+inputs: NN_model, df_train, df_train_all, target for NN, callback history data frame, emissions folder
+outputs: use NN_model.predict() to test trained netwrok, analysis plots
+"""
     ##Make predictions
-    predictions = (NN_model.predict(df_train))
+    predictions = (NN_model.predict(df_train)) #df_train is a cut df_train_all that is used for testing
     df_train_all['CalibratedE'] = predictions
 
     l_true = df_train_all["cluster_ENG_CALIB_TOT"].values
@@ -132,6 +149,10 @@ def MakeAllPlots(df_train, df_train_all, predictions, target, history, emissions
 
 ##Here is where you pick the shape and size of the network. This is really where the magic happens. Everything else was just to make runing this work faster.
 def Make_RNN(in_shape):
+"""
+inputs:in_shape (dimensions)
+outputs: NN_model
+"""
     NN_model = Sequential()
     NN_model.add(
         Dense(1024,
@@ -148,6 +169,10 @@ def Make_RNN(in_shape):
 
 
 def learning_schedule(epoch):
+"""
+inputs: epochs
+outputs:learning rate
+"""
     learning_rate = .001 * math.exp(-epoch / 20)
 
     tf.summary.scalar('learning rate', data=learning_rate, step=epoch)
@@ -155,6 +180,10 @@ def learning_schedule(epoch):
 
 
 def compile_NN(NN_model):
+"""
+inputs: NN_model
+process: chooses what loss metrics to record and which optimization algorithm to use
+"""
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
         .001, decay_rate=.36, decay_steps=1e5)
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)

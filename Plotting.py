@@ -7,7 +7,11 @@ import pandas as pd
 
 
 def plt_result(inputs, predictions, target, directory):
-    plt.switch_backend('agg')
+"""
+Inputs: history_df, emissions
+Process: creates scatter plot with Nathan's original axes
+"""
+    plt.switch_backend('agg')#for writing to file, not for rendering in a window
     fig = plt.figure()
     ax = fig.add_axes([0, 0, 1, 1])
     ax.scatter(predictions, target, color='b')
@@ -20,6 +24,10 @@ def plt_result(inputs, predictions, target, directory):
 
 
 def loss_func_ana(history_df, emissions):
+"""
+Inputs: history_df, emissions
+Process: plots the loss functions and other loss metrics and validation plots 
+"""
     plt.switch_backend('agg')
     trial_columns = history_df.columns
     for column in trial_columns:
@@ -31,6 +39,11 @@ def loss_func_ana(history_df, emissions):
 
 
 def plothist2d(h, Ratio, title, emissions):
+"""
+Inputs: h, Ratio, title, emissions
+Process: formats the default 2d histogram plots and defines where and what the file is saved as
+"""
+    
     plt.switch_backend('agg')
 
     fig, ax = plt.subplots(figsize=(16, 8))
@@ -61,6 +74,10 @@ def plothist2d(h, Ratio, title, emissions):
 
 
 def Plot_performance(df, title="", emissions=""):
+"""
+Inputs: dataframe, title of plot="", emissions folder name =""
+Process: gets cluster_ENG_CALIB_TOT and CalibratedE values, set axes and bin sizes, and the uses  plothist2d() to plot histogram
+"""
     l_true = df["cluster_ENG_CALIB_TOT"].values
     l_calib = df["CalibratedE"].values
     Ratio = l_calib / l_true
@@ -100,9 +117,13 @@ def Plot_performance(df, title="", emissions=""):
 
 
 def createROOTPlots(df, emissions):
+"""
+Inputs: dataframe, emissions
+Process: calls previously defined functions to create plots
+"""
     og_df = df
-    em_df = og_df[og_df["truthPDG"] == 111]
-    had_df = og_df[og_df["truthPDG"] == 211]
+    #em_df = og_df[og_df["truthPDG"] == 111]
+    #had_df = og_df[og_df["truthPDG"] == 211]
     Plot_performance(og_df, "All Data", emissions)
-    Plot_performance(em_df, "EM Tree", emissions)
-    Plot_performance(had_df, "Had Tree", emissions)
+    #Plot_performance(em_df, "EM Tree", emissions)
+    #Plot_performance(had_df, "Had Tree", emissions)
