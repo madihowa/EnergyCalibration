@@ -107,13 +107,11 @@ sbatch quanah_job.sh emission_folder path/to/inputs/list/csv
 
 ### Usage for testing a trained network
 
-#### USAGE ON LOCAL MACHINE:
 
-Work in progress
+```
+python testing_trained_NN.py path/to/hdf5_files path/to/test_data.csv path/to/train_data.csv
 
-#### USAGE ON HPC SYSTEMS:
-
-Work in progress
+```
 
 <!-- HIGH LEVEL ALGORITHM -->
 ## Highlevel Algorithm:
