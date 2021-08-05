@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 import os
+import sys
 
 from Plotting import *
 from DataHandler import DataHandler
@@ -63,7 +64,8 @@ outputs:figures.png, new Delta values to dataframe,
 
 #Main Program
 
-input_dir = "/lustre/work/madihowa/CERN/EnergyCalibration/results/run1_e100_multiple_inputs_2021-07-21-22_54_33"
+#input_dir = "/lustre/work/madihowa/CERN/EnergyCalibration/results/run1_e100_multiple_inputs_2021-07-21-22_54_33" #where the saved model (hdf5) are
+input_dir = sys.argv[1] #must pass in path to foleder with  hdf5's for trained model
 common_csvs = [input_dir+"/callback_history.csv", input_dir+"/results.csv"]
 all_csvs = glob.glob(input_dir+"/*csv")
 
@@ -75,7 +77,8 @@ model = load_model(input_dir)
 emissions = input_dir+"/jetDataPredictions"
 
 #specifying the testing and training data files
-test_csv_dir, train_csv_dir = "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv", "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv"
+#test_csv_dir, train_csv_dir = "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv", "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv"
+test_csv_dir, train_csv_dir = sys.argv[2], sys.argv[3] #must pass in path to test and train csv files
 
 #instantiate the Data Handler object
 all_data = DataHandler(test_csv_dir, train_csv_dir, list_inputs_dir)
