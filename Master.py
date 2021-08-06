@@ -7,7 +7,6 @@ from tensorflow.python.framework.ops import disable_eager_execution
 from shutil import copyfile
 from DataHandler import DataHandler
 from RNN import FitRNetwork
-from Cuts import *
 
 warnings.filterwarnings('ignore')
 disable_eager_execution()

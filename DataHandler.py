@@ -23,7 +23,7 @@ class DataHandler:
         self.test_all_normed = normalizeDF(self.test_raw)
         
         self.train_df = self.getTrainingData()
-        selftest_df = self.getTestingData()
+        self.test_df = self.getTestingData()
         self.target_df = self.train_raw["cluster_ENG_CALIB_TOT"]
         
         self.processCuts(cuts_dir, self.train_all_normed)
