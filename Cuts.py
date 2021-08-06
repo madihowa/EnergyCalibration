@@ -21,9 +21,21 @@ class Cuts:
             print("Size of dataframe: {}\n".format(len(df)))
         return df
 
-    def summedEnergyCut(self, df, term, value, operation, col):
+    def summedEnergyCut(self, df,term,value,operation, col):
         print("Applying Cut: {}".format(col, term, operation, value))
+        df.sort_values(by=['eventNumber'],inplace=True)
+        cname = "sum"+term
+        df[cname] = value*df.groupby('eventNumber')[term].transform('sum')
+
+        if operation == "<":
+            df = df[df[term] < df[cname]]
+        elif operation == ">":
+            df = df[df[term] > df[cname]]
+        elif operation == "==":
+            df = df[df[term] == df[cname]]
+
         return df
+
 
     def trimDF(self, df, term, value, operation, col):
         print("Applying Cut: {}".format(col, term, operation, value))
