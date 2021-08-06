@@ -1,7 +1,7 @@
 import pandas as pd
 import csv
 import numpy as np
-
+from Cuts import *
 
 def normalizeDF(df):
     df_norm = df.subtract(df.mean())
@@ -10,25 +10,58 @@ def normalizeDF(df):
 
 
 class DataHandler:
-    def __init__(self, path2test, path2train, path2list_inputs):
+    def __init__(self, path2test, path2train, path2list_inputs, cuts_dir):
         self.path2test = path2test
         self.path2train = path2train
         self.list_inputs = self.getListInputs(path2list_inputs)
-
-        self.train_all = self.getAllTrainDF()
-        self.test_all = self.getAllTestDF()
-        self.allColumns = self.train_all.columns
+        
+        self.train_raw = self.getAllTrainDF()
+        self.test_raw = self.getAllTestDF()
+        self.allColumns = self.train_raw.columns
+        
+        self.train_all_normed = normalizeDF(self.train_raw)
+        self.test_all_normed = normalizeDF(self.test_raw)
+        
         self.train_df = self.getTrainingData()
-        self.test_df = self.getTestingData()
-        self.target_df = self.train_all["cluster_ENG_CALIB_TOT"]
+        selftest_df = self.getTestingData()
+        self.target_df = self.train_raw["cluster_ENG_CALIB_TOT"]
+        
+        self.processCuts(cuts_dir, self.train_all_normed)
+    
+    def processCuts(self, cuts_dir, df):
+        cuts_df = pd.read_json(cuts_dir)
+        if len(cuts_df) == 0:
+            print("No cuts applied...")
+            return
+        else:
+            c = Cuts(cuts_df, df)
+            df = c.getCuts(df)
+            self.train_df = self.getTrainingDataFromCutDF(df)
+            self.test_df = self.getTestingDataFromCutDF(df)
+            self.target_df = self.getTargetDatafromCutDF(df, self.train_raw)
+            
+    def getTargetDatafromCutDF(self, df, test_df):
+        indices = list(df.index.values)
+        df = test_df.iloc[indices]
+        return df["cluster_ENG_CALIB_TOT"]
+    
+    def getTestingDataFromCutDF(self, df):
+        test_df = df[self.list_inputs]
+        normed_df = normalizeDF(test_df)
+        return normed_df
 
+    def getTrainingDataFromCutDF(self, df):
+        train_df = df[self.list_inputs]
+        normed_df = normalizeDF(train_df)
+        return normed_df
+        
     def getListInputs(self, path2inputs): #gets list inputs data
         with open(path2inputs, newline='') as f:
             reader = csv.reader(f)
             data = list(reader)
         data = list(np.array(data).flatten())
         return data
-
+    
     def getAllTestDF(self): #gets testing data frame
         test_all = pd.read_csv(self.path2test)
         return test_all
@@ -42,11 +75,11 @@ class DataHandler:
         return columns
 
     def getTestingData(self):#gets list inputs testing data from normalized data frame
-        test_df = self.test_all[self.list_inputs]
+        test_df = self.test_raw[self.list_inputs]
         normed_df = normalizeDF(test_df)
         return normed_df
 
     def getTrainingData(self):#gets list inputs training data from normalized data frame
-        train_df = self.train_all[self.list_inputs]
+        train_df = self.train_raw[self.list_inputs]
         normed_df = normalizeDF(train_df)
-        return normed_df
+        return normed_df.

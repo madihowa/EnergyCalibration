@@ -80,8 +80,26 @@ First, install pip!
 There are two ways that I have set this up to work. You can run it locally or a HPC system that uses the Slurm Workload Manager. You also have the option of training and testing the network or testing on an already trained network. First through you need to do the following:
 
 * Add your data files into the data directory 
-* Add an inputs csv file to inputs directroy. 
+* Add an inputs csv file to inputs directory. 
     * This should be formatted as a comma separated values in a continuos line with NO spaces.
+* Add a cuts json file to the cuts directory.
+    * Format of cuts:
+        ```json
+        name (dtype -> string (e.g. "cut1")):
+            {
+                    function: dtype -> string (e.g. "trimDF"),
+                    term: dtype -> string (e.g. "clusterEta"),
+                    operation: dtype -> string (e.g. ">"),
+                    value: dtype -> float/int (e.g. 0.8, 2),
+
+            }
+        ```
+    * Important Notes on cuts:
+        1. The 'JSON' file can contain as many of such cuts as required. 
+        2. An empty 'JSON' file would imply no cuts.
+        3. Cuts will be processed in the order they are presented in the 'JSON' file.
+        4. The following cuts are available within the program -  'trimDF', 'trimAbsDF', 'summedEnergyCut'. You can define your own custom cuts in `Cuts.py` file.
+
 * Start in the EnergyCalibration directory to begin a run.
 
 ### Usage for training and testing
@@ -90,7 +108,8 @@ There are two ways that I have set this up to work. You can run it locally or a 
 
 
 ```
-python Master.py emission_folder path/to/inputs/list/csv
+python Master.py emission_folder path/to/inputs/list/csv path/to/testing/data/csv path/to/training/data/csv path/to/cuts/json
+
 ```
 
 #### USAGE ON HPC SYSTEMS:
@@ -102,7 +121,8 @@ python qjob.py --help
 
 To run a job
 ```
-sbatch quanah_job.sh emission_folder path/to/inputs/list/csv
+sbatch quanah_job.sh emission_folder path/to/inputs/list/csv path/to/testing/data/csv path/to/training/data/csv path/to/cuts/json
+
 ```
 
 ### Usage for testing a trained network
@@ -127,7 +147,7 @@ python testing_trained_NN.py path/to/hdf5_files path/to/test_data.csv path/to/tr
 
     - Trim the datasets with required columns.
     
-    - Make any cuts if needed
+    - Make any cuts if needed by creating cuts `JSON` file
     
     - Drop the target column from training data.
     
@@ -157,8 +177,6 @@ python testing_trained_NN.py path/to/hdf5_files path/to/test_data.csv path/to/tr
 
 <!-- TO DO -->
 ## To Do:
-
--[] Add columns for Delta stuff in NetworkRPedict
 
 -[] Update GraphMean to generate  ROOT plots
 

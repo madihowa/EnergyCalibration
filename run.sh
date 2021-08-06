@@ -10,8 +10,10 @@ chmod 000700 $XDG_RUNTIME_DIR
 export QT_QPA_PLATFORM='offscreen'
 
 
-# load foldername and path2csvfile as variables
+# load foldername, path2Inputcsvfile,  path2testcsvfile, and path2traincsvfile as variables
 FNAME=$1
 PCSV=$2
+TESTCSV=$3
+TRAINCSV=$4
 
-python Master.py $FNAME $PCSV
+python Master.py $FNAME $PCSV $TESTCSV $TRAINCSV

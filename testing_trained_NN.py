@@ -1,4 +1,4 @@
-
+import datetime
 import glob
 import numpy as np
 import pandas as pd
@@ -12,11 +12,11 @@ from RNN import *
 
 
 def load_model(input_dir):
-"""
-Inputs: input directory
-Outputs: trained model
-Process: takes in directory of trained model, uses weights output to choose most recent model that was trained
-"""
+    """
+    Inputs: input directory
+    Outputs: trained model
+    Process: takes in directory of trained model, uses weights output to choose most recent model that was trained
+    """
     results_csv_dir = input_dir + "/results.csv"
     history_csv_dir = input_dir + "/callback_history.csv"
     model_checkpoint = find_min_weights(input_dir)
@@ -26,10 +26,10 @@ Process: takes in directory of trained model, uses weights output to choose most
 #  Making Predictions Using Trained Models
 
 def make_predictions(NN_model, df_train, df_train_all, target, emissions):
-"""
-inputs: Neural Network model, train dataframe, df_train_all, target of the network, emissions directory
-outputs:figures.png, new Delta values to dataframe, 
-"""    
+    """
+    inputs: Neural Network model, train dataframe, df_train_all, target of the network, emissions directory
+    outputs:figures.png, new Delta values to dataframe, 
+    """    
     try:
         #creates the new directory for storing the results of testing
         os.mkdir("{}".format(emissions))
@@ -56,8 +56,11 @@ outputs:figures.png, new Delta values to dataframe,
     plt_result(df_train, predictions, target, emissions)
     
     #creates the ROOT plots
-    createROOTPlots(df_train_all, emissions)
-    
+    try:
+        createROOTPlots(df_train_all, emissions)
+    except:
+        pass
+
     #writing the updated dataframe to memory
     write_csv_file(df_train_all, emissions)
 
@@ -74,13 +77,15 @@ for csvs in all_csvs:
         list_inputs_dir = csvs
 
 model = load_model(input_dir)
-emissions = input_dir+"/jetDataPredictions"
+date = datetime.datetime.today().strftime('%Y-%m-%d-%H_%M_%S')
+emissions = input_dir+"/jetDataPredictions_{}".format(date)
 
 #specifying the testing and training data files
 #test_csv_dir, train_csv_dir = "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv", "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv"
 test_csv_dir, train_csv_dir = sys.argv[2], sys.argv[3] #must pass in path to test and train csv files
 
 #instantiate the Data Handler object
+list_inputs_dir = "./inputs/FelixInputs.csv"
 all_data = DataHandler(test_csv_dir, train_csv_dir, list_inputs_dir)
 
 #get all the required DFs from the DataHandler object
@@ -91,10 +96,10 @@ target_df = all_data.target_df
 # Since Jet Data File right now doesn't truthPDG. We are avoiding creating Had_Tree and EM_Tree
 
 def createROOTPlots(df, emissions):
-"""
-inputs:dataframe, emissions folder name
-outputs:Plot_performance graph
-"""
+    """
+    inputs:dataframe, emissions folder name
+    outputs:Plot_performance graph
+    """
     og_df = df
    # em_df = og_df[og_df["truthPDG"] == 111]
    # had_df = og_df[og_df["truthPDG"] == 211]
