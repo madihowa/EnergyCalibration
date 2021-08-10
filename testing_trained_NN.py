@@ -83,14 +83,15 @@ emissions = input_dir+"/jetDataPredictions_{}".format(date)
 #specifying the testing and training data files
 #test_csv_dir, train_csv_dir = "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv", "/lustre/work/madihowa/CERN/EnergyCalibration/data/jetData/jets.csv"
 test_csv_dir, train_csv_dir = sys.argv[2], sys.argv[3] #must pass in path to test and train csv files
+cuts_dir = sys.argv[4]
 
 #instantiate the Data Handler object
-list_inputs_dir = "./inputs/FelixInputs.csv"
-all_data = DataHandler(test_csv_dir, train_csv_dir, list_inputs_dir)
+list_inputs_dir = "./inputs/MultipleInputs.csv"
+all_data = DataHandler(test_csv_dir, train_csv_dir, list_inputs_dir, cuts_dir)
 
 #get all the required DFs from the DataHandler object
 train_df = all_data.train_df
-train_all_df = all_data.train_all
+train_all_df = all_data.train_raw
 target_df = all_data.target_df
 
 # Since Jet Data File right now doesn't truthPDG. We are avoiding creating Had_Tree and EM_Tree

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=rJZ
+#SBATCH --job-name=jetCutTrial
 #SBATCH --output=quanah_outputs/%x.o%j
 #SBATCH --error=quanah_errors/%x.e%j
 #SBATCH --partition quanah
@@ -10,4 +10,4 @@
 #SBATCH --mail-type=ALL
 
 # actual code to execute
-./run.sh $1 $2 $3 $4
+./run.sh $1 $2 $3 $4 $5

@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=testing_jets_csv
+#SBATCH --job-name=testing_trained_on_jets_csv
 #SBATCH --output=quanah_outputs/%x.o%j
 #SBATCH --error=quanah_errors/%x.e%j
 #SBATCH --partition quanah
@@ -10,4 +10,4 @@
 #SBATCH --mail-type=ALL
 
 # actual code to execute
-python testing_trained_NN.py $1 $2 $3 
+python testing_trained_NN.py $1 $2 $3 $4 

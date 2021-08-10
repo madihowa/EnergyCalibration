@@ -82,4 +82,4 @@ class DataHandler:
     def getTrainingData(self):#gets list inputs training data from normalized data frame
         train_df = self.train_raw[self.list_inputs]
         normed_df = normalizeDF(train_df)
-        return normed_df.
+        return normed_df
