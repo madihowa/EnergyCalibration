@@ -13,6 +13,7 @@ class DataHandler:
     def __init__(self, path2test, path2train, path2list_inputs, cuts_dir):
         self.path2test = path2test
         self.path2train = path2train
+        self.path2cuts = cuts_dir
         self.list_inputs = self.getListInputs(path2list_inputs)
         
         self.train_raw = self.getAllTrainDF()
@@ -26,10 +27,10 @@ class DataHandler:
         self.test_df = self.getTestingData()
         self.target_df = self.train_raw["cluster_ENG_CALIB_TOT"]
         
-        self.processCuts(cuts_dir, self.train_all_normed)
+        self.processCuts(self.train_all_normed)
     
-    def processCuts(self, cuts_dir, df):
-        cuts_df = pd.read_json(cuts_dir)
+    def processCuts(self, df):
+        cuts_df = pd.read_json(self.path2cuts)
         if len(cuts_df) == 0:
             print("No cuts applied...")
             return
